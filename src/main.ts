@@ -7,11 +7,23 @@ import { WinstonModule } from 'nest-winston';
 import * as winston from 'winston';
 import { ecsFormat } from '@elastic/ecs-winston-format';
 import { AppModule } from './app.module';
+import { trace, context } from '@opentelemetry/api';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
     logger: WinstonModule.createLogger({
-      format: ecsFormat(),
+      format: winston.format.combine(
+        winston.format((info) => {
+          const span = trace.getSpan(context.active());
+          if (span) {
+            const { traceId, spanId } = span.spanContext();
+            info['trace.id'] = traceId;
+            info['span.id'] = spanId;
+          }
+          return info;
+        })(),
+        ecsFormat(),
+      ),
       transports: [new winston.transports.Console()],
     }),
   });
