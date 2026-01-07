@@ -19,6 +19,10 @@ Na raiz do projeto, execute:
 ```bash
 docker-compose up -d
 ```
+Rodar migrations:
+```bash
+npm run migration:run
+```
 ## 2. Instalação e Execução da API
 
 ### Instalar dependências do Node

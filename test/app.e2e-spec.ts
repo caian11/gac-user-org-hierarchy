@@ -23,7 +23,7 @@ describe('Nodes (e2e)', () => {
     it('/users (POST) - should create a user', async () => {
       const res = await request(app.getHttpServer())
         .post('/users')
-        .send({ name: 'E2E User', email: 'e2e@example.com' })
+        .send({ name: 'E2E User', email: 'e2e5@example.com' })
         .expect(201);
 
       userId = res.body.id;
